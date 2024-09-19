@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const express = require('express'); // For the webhook server
 
-const PORT = process.env.PORT || 3000; // Define port for the server
+const PORT = process.env.PORT || 3003; // Define port for the server
 const app = express();
 app.use(express.json());
 
@@ -14,16 +14,16 @@ app.listen(PORT, () => {
 });
 
 // Load environment variables
-const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
-const AIRDAO_RPC = process.env.AIRDAO_RPC;
+const TELEGRAM_TOKEN = process.env.HEDERA_TELEGRAM_TOKEN;
+const HEDERA_RPC = "https://testnet.hashio.io/api";
 
 // Initialize ethers.js provider
-const provider = new ethers.JsonRpcProvider(AIRDAO_RPC);
+const provider = new ethers.JsonRpcProvider(HEDERA_RPC);
 
 // Initialize Telegram bot
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
-
+function hederaBotFunction(){
 // Webhook endpoint for receiving updates from Telegram
 app.post(`/bot${TELEGRAM_TOKEN}`, (req, res) => {
   bot.processUpdate(req.body);
@@ -63,7 +63,7 @@ Here are the commands you can use:
 🔹 /nft [contract_address] [token_id] – Fetch details about an ERC721 NFT
 🔹 /sendnft [private_key] [to_address] [contract_address] [token_id] – Send an ERC721 NFT to a specified address
 
-Feel free to explore the AirDAO network with these features! 💻
+Feel free to explore the Hedera network with these features! 💻
   `;
 
   bot.sendMessage(msg.chat.id, welcomeMessage);
@@ -124,7 +124,7 @@ bot.onText(/\/networkinfo/, async (msg) => {
     const latestBlock = await provider.send('eth_blockNumber');
     const gasPrice = await provider.send('eth_gasPrice');
 
-    bot.sendMessage(chatId, `🔗 *AirDAO Network Info*\n\n- Network ID: ${network}\n- Latest Block: ${parseInt(latestBlock, 16)}\n- Current Gas Price: ${ethers.formatUnits(gasPrice, 'gwei')} Gwei`);
+    bot.sendMessage(chatId, `🔗 *Hedera Network Info*\n\n- Network ID: ${network}\n- Latest Block: ${parseInt(latestBlock, 16)}\n- Current Gas Price: ${ethers.formatUnits(gasPrice, 'gwei')} Gwei`);
   } catch (error) {
     bot.sendMessage(chatId, `Error fetching network info: ${error.message}`);
   }
@@ -312,3 +312,9 @@ try {
   bot.sendMessage(chatId, `Error fetching latest block details: ${error.message}`);
 }
 });
+
+}
+
+
+module.exports = { hederaBotFunction };
+
