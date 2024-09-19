@@ -5,13 +5,13 @@ require('dotenv').config();
 const express = require('express'); // For the webhook server
 
 const PORT = process.env.PORT || 3004; // Define port for the server
-const app = express();
-app.use(express.json());
+// const app = express();
+// app.use(express.json());
 
-// Start Express server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// // Start Express server
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
 
 // Load environment variables
 const TELEGRAM_TOKEN = process.env.MORPH_TELEGRAM_TOKEN;
@@ -25,10 +25,10 @@ const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
 function MorphBotFunction(){
 // Webhook endpoint for receiving updates from Telegram
-app.post(`/bot${TELEGRAM_TOKEN}`, (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
-});
+// app.post(`/bot${TELEGRAM_TOKEN}`, (req, res) => {
+//   bot.processUpdate(req.body);
+//   res.sendStatus(200);
+// });
 
 // Command suggestions for Telegram (inline commands)
 bot.setMyCommands([
