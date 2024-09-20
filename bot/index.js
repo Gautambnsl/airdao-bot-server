@@ -12,7 +12,7 @@ const { RootStockBotFunction } = require('./RootStock_bot');
 try {
   FhenixBot();
   hederaBotFunction();
- // AirDAOFunction();
+   AirDAOFunction();
    MorphBotFunction();
    oasisBotFunction();
    RootStockBotFunction();
