@@ -3,6 +3,9 @@ const { ethers } = require('ethers');
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const express = require('express'); // For the webhook server
+const axios = require('axios');
+
+
 
 const PORT = process.env.PORT || 3003; // Define port for the server
 // const app = express();
@@ -42,7 +45,8 @@ bot.setMyCommands([
   { command: '/senderc20', description: 'Send ERC20 tokens from one address to another' },
   { command: '/latestblock', description: 'Get details about the latest block' },
   { command: '/nft', description: 'Fetch details about an ERC721 NFT' },
-  { command: '/sendnft', description: 'Send an ERC721 NFT from one address to another' }
+  { command: '/sendnft', description: 'Send an ERC721 NFT from one address to another' },
+  { command: '/hcsevent', description: 'submit audit events' }
 ]);
 
 // Start bot - with detailed command list
@@ -62,6 +66,8 @@ Here are the commands you can use:
 🔹 /latestblock – Get details about the latest block
 🔹 /nft [contract_address] [token_id] – Fetch details about an ERC721 NFT
 🔹 /sendnft [private_key] [to_address] [contract_address] [token_id] – Send an ERC721 NFT to a specified address
+🔹 /sendnft [private_key] [to_address] [contract_address] [token_id] – Send an ERC721 NFT to a specified address
+🔹 /hcsevent [Message] – Send udit events to hedera
 
 Feel free to explore the Hedera network with these features! 💻
   `;
@@ -312,6 +318,36 @@ try {
   bot.sendMessage(chatId, `Error fetching latest block details: ${error.message}`);
 }
 });
+
+
+//  log on hedera
+bot.onText(/\/hcsevent (.+)/, async (msg, match) => {
+  const chatId = msg.chat.id;
+  const message = match[1];
+  // data = api
+
+  // Send a GET request to the /test route
+
+  let data ;
+ await axios.get('http://hsc-hedera-server-production.up.railway.app/SendMessageOnHedera', {
+  params: {
+    string1: message
+  }
+})
+.then(response => {
+  console.log('Response:',response.data.result[0] );
+  data = response.data.result[0]
+})
+.catch(error => {
+  // Handle error
+  console.error('Error:', error.response ? error.response.data : error.message);
+});
+
+
+
+
+  bot.sendMessage(chatId, JSON.stringify(data,null,2))})
+
 
 }
 
