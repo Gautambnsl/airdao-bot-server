@@ -11,8 +11,8 @@ const { RootStockBotFunction } = require('./RootStock_bot');
 // Initialize Telegram bot and handle errors
 try {
   FhenixBot();
-  AirDAOFunction();
-  // hederaBotFunction();
+  hederaBotFunction();
+  //AirDAOFunction();
   // MorphBotFunction();
   // oasisBotFunction();
   // RootStockBotFunction();

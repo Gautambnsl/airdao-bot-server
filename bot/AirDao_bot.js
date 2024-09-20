@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const express = require('express'); // For the webhook server
 
-const PORT = process.env.PORT || 3001; // Define port for the server
+//const PORT = process.env.PORT || 3001; // Define port for the server
 // const app = express();
 // app.use(express.json());
 
