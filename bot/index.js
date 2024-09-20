@@ -12,10 +12,10 @@ const { RootStockBotFunction } = require('./RootStock_bot');
 try {
   FhenixBot();
   hederaBotFunction();
-  //AirDAOFunction();
-  // MorphBotFunction();
-  // oasisBotFunction();
-  // RootStockBotFunction();
+ // AirDAOFunction();
+   MorphBotFunction();
+   oasisBotFunction();
+   RootStockBotFunction();
 } catch (error) {
   console.error('Error initializing Telegram bot:', error.message);
 }
