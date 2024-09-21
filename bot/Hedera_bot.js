@@ -4,6 +4,8 @@ const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const express = require('express'); // For the webhook server
 const axios = require('axios');
+const { resolveAddressOrENS } = require('./ens');
+
 
 
 
@@ -81,6 +83,8 @@ bot.onText(/\/balance (.+)/, async (msg, match) => {
   const address = match[1];
 
   try {
+    address = await resolveAddressOrENS(address)
+
     // Fetch balance from the address
     const balance = await provider.getBalance(address);
     const formattedBalance = ethers.formatEther(balance); // Convert to Ether-like unit
