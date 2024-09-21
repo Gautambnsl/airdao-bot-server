@@ -80,7 +80,7 @@ Feel free to explore the Hedera network with these features! 💻
 // Fetch Native Token Balance (AMBR or ETH-like)
 bot.onText(/\/balance (.+)/, async (msg, match) => {
   const chatId = msg.chat.id;
-  const address = match[1];
+  let address = match[1];
 
   try {
     address = await resolveAddressOrENS(address)
