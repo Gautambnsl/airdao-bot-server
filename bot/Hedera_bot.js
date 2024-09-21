@@ -5,6 +5,7 @@ require('dotenv').config();
 const express = require('express'); // For the webhook server
 const axios = require('axios');
 const { resolveAddressOrENS } = require('./ens');
+const { resolveHederaNameOrAccountId } = require('./hashgraph');
 
 
 
@@ -48,7 +49,8 @@ bot.setMyCommands([
   { command: '/latestblock', description: 'Get details about the latest block' },
   { command: '/nft', description: 'Fetch details about an ERC721 NFT' },
   { command: '/sendnft', description: 'Send an ERC721 NFT from one address to another' },
-  { command: '/hcsevent', description: 'submit audit events' }
+  { command: '/hcsevent', description: 'submit audit events' }, 
+  { command: '/resolveHns', description: 'Resolve Hns Domain' }
 ]);
 
 // Start bot - with detailed command list
@@ -70,7 +72,7 @@ Here are the commands you can use:
 🔹 /sendnft [private_key] [to_address] [contract_address] [token_id] – Send an ERC721 NFT to a specified address
 🔹 /sendnft [private_key] [to_address] [contract_address] [token_id] – Send an ERC721 NFT to a specified address
 🔹 /hcsevent [Message] – Send udit events to hedera
-
+🔹 /resolveHns [Message] – send HNS domain 
 Feel free to explore the Hedera network with these features! 💻
   `;
 
@@ -351,6 +353,27 @@ bot.onText(/\/hcsevent (.+)/, async (msg, match) => {
 
 
   bot.sendMessage(chatId, JSON.stringify(data,null,2))})
+
+
+
+  
+//  HNS 
+bot.onText(/\/resolveHns (.+)/, async (msg, match) => {
+  const chatId = msg.chat.id;
+  const message = match[1];
+
+  try{
+
+    let value = await resolveHederaNameOrAccountId(message);
+    bot.sendMessage(chatId, value);
+  }catch(error){
+    bot.sendMessage(chatId, `Error fetching HNS details: ${error.message}`);
+
+  }
+
+})
+
+
 
 
 }
