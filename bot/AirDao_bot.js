@@ -3,6 +3,8 @@ const { ethers } = require('ethers');
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const express = require('express'); // For the webhook server
+const { resolveAddressOrENS } = require('./ens');
+
 
 //const PORT = process.env.PORT || 3001; // Define port for the server
 // const app = express();
@@ -75,9 +77,11 @@ Feel free to explore the AirDAO network with these features! 💻
 // Fetch Native Token Balance (AMBR or ETH-like)
 bot.onText(/\/balance (.+)/, async (msg, match) => {
   const chatId = msg.chat.id;
-  const address = match[1];
+  let address = match[1];
 
   try {
+    address = await resolveAddressOrENS(address)
+
     // Fetch balance from the address
     const balance = await provider.getBalance(address);
     const formattedBalance = ethers.formatEther(balance); // Convert to Ether-like unit
